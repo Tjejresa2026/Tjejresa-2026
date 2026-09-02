@@ -1,0 +1,16 @@
+{
+  "name": "Tjejresan 2026 – Malta",
+  "short_name": "Tjejresan",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#e7f3f0",
+  "theme_color": "#087f83",
+  "lang": "sv-SE",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
