@@ -109,4 +109,43 @@ function footer(){document.getElementById('main').insertAdjacentHTML('beforeend'
 home();
 setInterval(()=>{if(page==='now')now()},30000);
 </script>
+
+<script>
+(function () {
+  const QUIZ_OPEN = new Date("2026-09-10T03:00:00+02:00").getTime();
+
+  function quizIsOpen() {
+    return Date.now() >= QUIZ_OPEN;
+  }
+
+  function updateQuizGate() {
+    const btn = document.getElementById("quizBtn");
+    if (!btn) return;
+    if (quizIsOpen()) {
+      btn.disabled = false;
+      btn.style.opacity = "1";
+      btn.title = "";
+    } else {
+      btn.disabled = true;
+      btn.style.opacity = "0.55";
+      btn.title = "Quizet öppnar 03:00 den 10 september 2026";
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    updateQuizGate();
+    setInterval(updateQuizGate, 1000);
+
+    document.addEventListener("click", function (e) {
+      const btn = e.target.closest("#quizBtn");
+      if (btn && !quizIsOpen()) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        alert("🚌 Quizet öppnar kl. 03:00 den 10 september – när bussen rullar!");
+      }
+    }, true);
+  });
+})();
+</script>
+
 </body></html>
