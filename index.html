@@ -19,6 +19,7 @@ h1{font-family:Georgia,serif;font-size:29px;font-weight:500;margin:4px 0 0}main{
 .kicker{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:var(--teal)}.hero .kicker{color:#dffbf5}
 .big{font-family:Georgia,serif;font-size:31px;line-height:1.08;margin:8px 0 12px}.hero p{color:rgba(255,255,255,.93)}.muted{color:var(--muted)}
 .btn{border:0;border-radius:999px;padding:12px 17px;background:var(--gold);color:#244243;font-weight:800}.btn.alt{background:var(--mint);color:var(--deep)}.btn.dark{background:var(--deep);color:white}.row{display:flex;gap:9px;flex-wrap:wrap}
+.btn:disabled{opacity:.5;cursor:not-allowed}
 .time{font-weight:900;font-size:20px}.meta{color:var(--muted);font-size:14px;margin-top:4px}.nowIcon{font-size:44px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.tile{background:#f7fbfa;border:1px solid var(--line);border-radius:18px;padding:15px}.tile b{display:block;font-size:17px;margin-bottom:4px}
 .quizOpt{width:100%;text-align:left;border:1px solid var(--line);background:white;padding:15px;border-radius:16px;margin:6px 0;color:var(--ink);font-weight:650}
@@ -45,17 +46,59 @@ h1{font-family:Georgia,serif;font-size:29px;font-weight:500;margin:4px 0 0}main{
 </div></nav>
 </div>
 <script>
-const schedule=[{"date": "2026-09-10", "start": "03:00", "end": "04:30", "icon": "🚕", "title": "Taxi till Kastrup", "place": "Hbg → Kastrup", "detail": "Peter taxi · två taxibilar beställda"}, {"date": "2026-09-10", "start": "06:30", "end": "12:26", "icon": "✈️", "title": "Flyg", "place": "CPH → Luqa", "detail": "Swiss Air"}, {"date": "2026-09-10", "start": "12:26", "end": "13:00", "icon": "🚐", "title": "Ankomst Malta + transfer till hotellet", "place": "Malta flygplats → Plaza Regency, Sliema", "detail": "Förbokad privat transfer"}, {"date": "2026-09-10", "start": "13:00", "end": "14:00", "icon": "🏨", "title": "Check-in + paus", "place": "Plaza Regency Hotels", "detail": "—"}, {"date": "2026-09-10", "start": "14:00", "end": "15:00", "icon": "🥂", "title": "Lunch och bubbel", "place": "Sliema", "detail": "Hotellet"}, {"date": "2026-09-10", "start": "17:30", "end": "18:00", "icon": "⛴️", "title": "Färja till Valletta", "place": "Sliema → Valletta", "detail": "Färja eller taxi"}, {"date": "2026-09-10", "start": "18:00", "end": "21:00", "icon": "🍹", "title": "Aperitivo", "place": "Valletta", "detail": "Bord för 10 · ett glas + något litet att äta"}, {"date": "2026-09-10", "start": "21:45", "end": "23:15", "icon": "🍽️", "title": "Middag", "place": "Valletta", "detail": "Bord för 10 · Marie?"}, {"date": "2026-09-10", "start": "23:15", "end": "23:59", "icon": "🚕", "title": "Till hotellet", "place": "Valletta → Sliema", "detail": "Färja/taxi"}, {"date": "2026-09-11", "start": "08:00", "end": "09:30", "icon": "☕", "title": "Frukost", "place": "Hotellet", "detail": "Ingår på hotellet"}, {"date": "2026-09-11", "start": "09:30", "end": "10:30", "icon": "🚶‍♀️", "title": "Promenad till Katamaranen", "place": "Hotellet → Triq Ix-Xatt, Tas-Sliema", "detail": "Promenad"}, {"date": "2026-09-11", "start": "10:30", "end": "18:30", "icon": "🛥️", "title": "Katamaran", "place": "Triq Ix-Xatt, Tas-Sliema", "detail": "Comino · Blue Lagoon · lunch · öppen bar"}, {"date": "2026-09-11", "start": "18:30", "end": "19:00", "icon": "🚶‍♀️", "title": "Till hotellet", "place": "Sliema", "detail": "Promenad · ca 25 min"}, {"date": "2026-09-11", "start": "19:00", "end": "19:30", "icon": "🧘‍♀️", "title": "Fri tid / dusch / vila", "place": "Hotellet", "detail": "Viktigt efter båtdagen"}, {"date": "2026-09-11", "start": "20:00", "end": "21:30", "icon": "🍽️", "title": "Middag", "place": "Valletta/Sliema", "detail": "Bord för 10 · Marie?"}, {"date": "2026-09-11", "start": "21:30", "end": "23:00", "icon": "🍸", "title": "Drink", "place": "Valletta/Sliema", "detail": "Valfritt"}, {"date": "2026-09-12", "start": "08:30", "end": "10:00", "icon": "☕", "title": "Frukost", "place": "Hotellet", "detail": "Ingår på hotellet"}, {"date": "2026-09-12", "start": "10:00", "end": "11:00", "icon": "🚐", "title": "Privat minibuss + chaufför", "place": "Sliema → Mdina", "detail": "Heldagspris bör begäras"}, {"date": "2026-09-12", "start": "11:00", "end": "13:00", "icon": "🏛️", "title": "Utforska Mdina och ev lätt lunch", "place": "Mdina", "detail": "Bord för 10"}, {"date": "2026-09-12", "start": "13:00", "end": "15:00", "icon": "🍷", "title": "Vingårdsbesök + provning", "place": "Meridiana Wine Estate", "detail": "Gruppbokning · allergier meddelas"}, {"date": "2026-09-12", "start": "15:00", "end": "16:00", "icon": "🚐", "title": "Tillbaka till hotellet", "place": "Mdina → Sliema", "detail": "Samma minibuss"}, {"date": "2026-09-12", "start": "16:00", "end": "18:15", "icon": "✨", "title": "Fri tid + göra sig fin", "place": "Hotellet", "detail": "Sista kvällen"}, {"date": "2026-09-12", "start": "18:30", "end": "19:00", "icon": "⛴️", "title": "Färd till Valletta", "place": "Sliema → Valletta", "detail": "Färja eller taxi"}, {"date": "2026-09-12", "start": "19:00", "end": "22:00", "icon": "🥂", "title": "Festmiddag", "place": "Valletta", "detail": "Bord för 10 · Marie?"}, {"date": "2026-09-12", "start": "22:00", "end": "23:15", "icon": "🍸", "title": "Sista kvällens drink", "place": "Valletta", "detail": "Valfritt"}, {"date": "2026-09-12", "start": "23:15", "end": "23:59", "icon": "🚕", "title": "Till hotellet", "place": "Valletta → Sliema", "detail": "Färja/taxi"}, {"date": "2026-09-13", "start": "08:30", "end": "10:00", "icon": "🥐", "title": "Lång frukost", "place": "Hotellet", "detail": "Ingår på hotellet"}, {"date": "2026-09-13", "start": "10:30", "end": "11:00", "icon": "🚐", "title": "Transfer till flygplats", "place": "Sliema → Malta flygplats", "detail": "Förbokad privat transfer"}, {"date": "2026-09-13", "start": "11:00", "end": "12:30", "icon": "🍴", "title": "Check in och lunch på flygplatsen", "place": "Malta flygplats", "detail": "Anpassas efter flygtid"}, {"date": "2026-09-13", "start": "13:15", "end": "19:10", "icon": "✈️", "title": "Flyg Luqa → CPH", "place": "Malta flygplats → CPH flygplats", "detail": "Swiss Air"}, {"date": "2026-09-13", "start": "19:45", "end": "20:46", "icon": "🚆", "title": "Öresundståg", "place": "Kastrup → Helsingborg C", "detail": "Tåg"}];
+const schedule=[
+{date:"2026-09-10",start:"03:00",end:"04:30",icon:"🚕",title:"Taxi till Kastrup",place:"Hbg → Kastrup",detail:"Peter taxi · två taxibilar beställda"},
+{date:"2026-09-10",start:"06:30",end:"12:26",icon:"✈️",title:"Flyg",place:"CPH → Luqa",detail:"Swiss Air",mask:{place:"CPH → resmålet"}},
+{date:"2026-09-10",start:"12:26",end:"13:00",icon:"🚐",title:"Ankomst Malta + transfer till hotellet",place:"Malta flygplats → Plaza Regency, Sliema",detail:"Förbokad privat transfer",mask:{title:"Ankomst + transfer till hotellet",place:"Flygplatsen → hotellet"}},
+{date:"2026-09-10",start:"13:00",end:"14:00",icon:"🏨",title:"Check-in + paus",place:"Plaza Regency Hotels",detail:"—",mask:{place:"Hotellet"}},
+{date:"2026-09-10",start:"14:00",end:"15:00",icon:"🥂",title:"Lunch och bubbel",place:"Sliema",detail:"Hotellet",mask:{place:"Vid hotellet"}},
+{date:"2026-09-10",start:"17:30",end:"18:00",icon:"⛴️",title:"Färja till Valletta",place:"Sliema → Valletta",detail:"Färja eller taxi",mask:{title:"Färja till stan",place:"Hotellet → stan"}},
+{date:"2026-09-10",start:"18:00",end:"21:00",icon:"🍹",title:"Aperitivo",place:"Valletta",detail:"Bord för 10 · ett glas + något litet att äta",mask:{place:"I stan"}},
+{date:"2026-09-10",start:"21:45",end:"23:15",icon:"🍽️",title:"Middag",place:"Valletta",detail:"Bord för 10 · Marie?",mask:{place:"I stan"}},
+{date:"2026-09-10",start:"23:15",end:"23:59",icon:"🚕",title:"Till hotellet",place:"Valletta → Sliema",detail:"Färja/taxi",mask:{place:"Stan → hotellet"}},
+{date:"2026-09-11",start:"08:00",end:"09:30",icon:"☕",title:"Frukost",place:"Hotellet",detail:"Ingår på hotellet"},
+{date:"2026-09-11",start:"09:30",end:"10:30",icon:"🚶‍♀️",title:"Promenad till Katamaranen",place:"Hotellet → Triq Ix-Xatt, Tas-Sliema",detail:"Promenad",mask:{title:"Promenad till hamnen",place:"Hotellet → hamnen"}},
+{date:"2026-09-11",start:"10:30",end:"18:30",icon:"🛥️",title:"Katamaran",place:"Triq Ix-Xatt, Tas-Sliema",detail:"Comino · Blue Lagoon · lunch · öppen bar",mask:{place:"Hamnen",detail:"Heldagstur på havet med lunch och öppen bar"}},
+{date:"2026-09-11",start:"18:30",end:"19:00",icon:"🚶‍♀️",title:"Till hotellet",place:"Sliema",detail:"Promenad · ca 25 min",mask:{place:"Hotellet"}},
+{date:"2026-09-11",start:"19:00",end:"19:30",icon:"🧘‍♀️",title:"Fri tid / dusch / vila",place:"Hotellet",detail:"Viktigt efter båtdagen"},
+{date:"2026-09-11",start:"20:00",end:"21:30",icon:"🍽️",title:"Middag",place:"Valletta/Sliema",detail:"Bord för 10 · Marie?",mask:{place:"I stan/vid hotellet"}},
+{date:"2026-09-11",start:"21:30",end:"23:00",icon:"🍸",title:"Drink",place:"Valletta/Sliema",detail:"Valfritt",mask:{place:"I stan/vid hotellet"}},
+{date:"2026-09-12",start:"08:30",end:"10:00",icon:"☕",title:"Frukost",place:"Hotellet",detail:"Ingår på hotellet"},
+{date:"2026-09-12",start:"10:00",end:"11:00",icon:"🚐",title:"Privat minibuss + chaufför",place:"Sliema → Mdina",detail:"Heldagspris bör begäras",mask:{place:"Hotellet → utflyktsmål"}},
+{date:"2026-09-12",start:"11:00",end:"13:00",icon:"🏛️",title:"Utforska Mdina och ev lätt lunch",place:"Mdina",detail:"Bord för 10",mask:{title:"Utforska en historisk stad + ev lätt lunch",place:"Utflyktsmål"}},
+{date:"2026-09-12",start:"13:00",end:"15:00",icon:"🍷",title:"Vingårdsbesök + provning",place:"Meridiana Wine Estate",detail:"Gruppbokning · allergier meddelas",mask:{place:"Vingård"}},
+{date:"2026-09-12",start:"15:00",end:"16:00",icon:"🚐",title:"Tillbaka till hotellet",place:"Mdina → Sliema",detail:"Samma minibuss",mask:{place:"Utflyktsmål → hotellet"}},
+{date:"2026-09-12",start:"16:00",end:"18:15",icon:"✨",title:"Fri tid + göra sig fin",place:"Hotellet",detail:"Sista kvällen"},
+{date:"2026-09-12",start:"18:30",end:"19:00",icon:"⛴️",title:"Färd till Valletta",place:"Sliema → Valletta",detail:"Färja eller taxi",mask:{title:"Färd till stan",place:"Hotellet → stan"}},
+{date:"2026-09-12",start:"19:00",end:"22:00",icon:"🥂",title:"Festmiddag",place:"Valletta",detail:"Bord för 10 · Marie?",mask:{place:"I stan"}},
+{date:"2026-09-12",start:"22:00",end:"23:15",icon:"🍸",title:"Sista kvällens drink",place:"Valletta",detail:"Valfritt",mask:{place:"I stan"}},
+{date:"2026-09-12",start:"23:15",end:"23:59",icon:"🚕",title:"Till hotellet",place:"Valletta → Sliema",detail:"Färja/taxi",mask:{place:"Stan → hotellet"}},
+{date:"2026-09-13",start:"08:30",end:"10:00",icon:"🥐",title:"Lång frukost",place:"Hotellet",detail:"Ingår på hotellet"},
+{date:"2026-09-13",start:"10:30",end:"11:00",icon:"🚐",title:"Transfer till flygplats",place:"Sliema → Malta flygplats",detail:"Förbokad privat transfer",mask:{place:"Hotellet → flygplatsen"}},
+{date:"2026-09-13",start:"11:00",end:"12:30",icon:"🍴",title:"Check in och lunch på flygplatsen",place:"Malta flygplats",detail:"Anpassas efter flygtid",mask:{place:"Flygplatsen"}},
+{date:"2026-09-13",start:"13:15",end:"19:10",icon:"✈️",title:"Flyg Luqa → CPH",place:"Malta flygplats → CPH flygplats",detail:"Swiss Air",mask:{title:"Flyg hem",place:"Flygplatsen → CPH"}},
+{date:"2026-09-13",start:"19:45",end:"20:46",icon:"🚆",title:"Öresundståg",place:"Kastrup → Helsingborg C",detail:"Tåg"}
+];
 const quiz=[{"kicker": "Ledtråd 1", "q": "Vårt resmål ligger mitt i Medelhavet.", "opts": ["Italien", "Spanien", "Malta", "Cypern"], "answer": 2}, {"kicker": "Ledtråd 2", "q": "Här är engelska ett av de officiella språken.", "opts": ["Portugal", "Malta", "Grekland", "Kroatien"], "answer": 1}, {"kicker": "Ledtråd 3", "q": "En av världens äldsta befästa städer finns med i vår resa.", "opts": ["Mdina", "Nice", "Palermo", "Split"], "answer": 0}, {"kicker": "Ledtråd 4", "q": "En av resans dagar innehåller Blue Lagoon och katamaran.", "opts": ["Sardinien", "Malta", "Rhodos", "Kreta"], "answer": 1}, {"kicker": "Ledtråd 5", "q": "Nu är det dags att gissa hela resmålet!", "opts": ["Malta", "Madeira", "Cypern", "Sicilien"], "answer": 0}];
 let revealed=localStorage.getItem('revealed')==='yes';
 let admin=localStorage.getItem('admin')==='yes';
 let demo=localStorage.getItem('demo')==='yes';
 let demoIndex=Number(localStorage.getItem('demoIndex')||0);
 let quizStep=Number(localStorage.getItem('quizStep')||0);
+let currentPage='home';
+
+// --- Quiz-lås: quizet öppnar först när resan börjar (eller i arrangörens demoläge) ---
+const QUIZ_OPEN = new Date("2026-09-10T03:00:00+02:00").getTime();
+function quizIsOpen(){ return demo || Date.now() >= QUIZ_OPEN; }
+function fmtCountdown(ms){
+ if(ms<=0) return '00:00:00';
+ const s=Math.floor(ms/1000), h=Math.floor(s/3600), m=Math.floor((s%3600)/60), sec=s%60;
+ return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');
+}
 
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
 function setNav(id){document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active')}
-function go(p){if(p==='home')home();if(p==='now')now();if(p==='quiz')quizPage();if(p==='info')info();if(p==='admin')adminPage()}
+function go(p){currentPage=p;if(p==='home')home();if(p==='now')now();if(p==='quiz')quizPage();if(p==='info')info();if(p==='admin')adminPage()}
 function home(){
  setNav('home');document.getElementById('title').textContent=revealed?'Malta 2026':'Den hemliga resan';
  document.getElementById('main').innerHTML=revealed
@@ -66,36 +109,48 @@ function home(){
 function getCurrent(){
  if(demo) return schedule[demoIndex];
  const now=new Date();
- // Europe/Malta has CET/CEST; use local device time when the trip is in progress.
  const ts=now.getTime();
  const active=schedule.find(a=>ts>=new Date(a.date+'T'+a.start+':00+02:00').getTime() && ts<new Date(a.date+'T'+a.end+':00+02:00').getTime());
  if(active) return active;
  const next=schedule.find(a=>ts<new Date(a.date+'T'+a.start+':00+02:00').getTime());
  return next||schedule[schedule.length-1];
 }
+function displayFields(a){
+ if(revealed||!a.mask) return {title:a.title,place:a.place,detail:a.detail};
+ return {title:a.mask.title||a.title,place:a.mask.place||a.place,detail:a.mask.detail||a.detail};
+}
 function now(){
  setNav('now');document.getElementById('title').textContent='Just nu';
  const a=getCurrent();
+ const d=displayFields(a);
  let isActive=true;
  if(!demo){
   const n=Date.now(), st=new Date(a.date+'T'+a.start+':00+02:00').getTime(), en=new Date(a.date+'T'+a.end+':00+02:00').getTime();
   isActive=n>=st&&n<en;
  }
- document.getElementById('main').innerHTML=`<section class="card hero"><div class="nowIcon">${a.icon}</div><div class="kicker">${isActive?'Pågår nu':'Nästa aktivitet'}</div><div class="big">${esc(a.title)}</div><div class="time">⏰ ${a.start}–${a.end}</div><div class="meta" style="color:#e0f7f3">📍 ${esc(a.place)}</div><p>${esc(a.detail)}</p><div class="row"><button class="btn" onclick="maps()">📍 Visa vägen</button><button class="btn alt" onclick="alert('Här lägger vi in boknings- eller biljettlänken.')">🎟️ Bokning</button></div></section><section class="card"><div class="kicker">Överraskningen</div><div class="big">🔒 Nästa aktivitet är dold</div><p class="muted">När klockan når nästa starttid byts innehållet automatiskt.</p></section>${demo?'<section class="card"><div class="kicker">Arrangörstest</div><button class="btn dark" onclick="nextDemo()">⏭️ Nästa aktivitet</button></section>':''}`;footer();
+ const mapBtn=revealed?'<button class="btn" onclick="maps()">📍 Visa vägen</button>':'<button class="btn" disabled title="Kartan visas efter avslöjandet">📍 Visa vägen</button>';
+ document.getElementById('main').innerHTML=`<section class="card hero"><div class="nowIcon">${a.icon}</div><div class="kicker">${isActive?'Pågår nu':'Nästa aktivitet'}</div><div class="big">${esc(d.title)}</div><div class="time">⏰ ${a.start}–${a.end}</div><div class="meta" style="color:#e0f7f3">📍 ${esc(d.place)}</div><p>${esc(d.detail)}</p><div class="row">${mapBtn}<button class="btn alt" onclick="alert('Här lägger vi in boknings- eller biljettlänken.')">🎟️ Bokning</button></div></section><section class="card"><div class="kicker">Överraskningen</div><div class="big">🔒 Nästa aktivitet är dold</div><p class="muted">När klockan når nästa starttid byts innehållet automatiskt.</p></section>${demo?'<section class="card"><div class="kicker">Arrangörstest</div><button class="btn dark" onclick="nextDemo()">⏭️ Nästa aktivitet</button></section>':''}`;footer();
 }
 function maps(){
+ if(!revealed) return; // säkerhetsspärr: ingen karta innan avslöjandet
  const a=getCurrent(); window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(a.place+' Malta'),'_blank');
 }
 function quizPage(){
  setNav('quiz');document.getElementById('title').textContent='Gissa resmålet';
  if(revealed){document.getElementById('main').innerHTML='<section class="card hero"><div class="kicker">Quiz klart</div><div class="big">🎉 Ni gissade rätt!</div><p>🇲🇹 Vi ska till Malta!</p><button class="btn" onclick="go(\'home\')">Till resan →</button></section>';footer();return}
+ if(!quizIsOpen()){
+  document.getElementById('main').innerHTML='<section class="card"><div class="lock">🔒</div><div class="kicker">Quizet är låst</div><div class="big">Öppnar kl. 03:00 den 10 september</div><p class="muted">När taxin kör igång låses ledtrådarna upp!</p><div class="count" id="countdown">'+fmtCountdown(QUIZ_OPEN-Date.now())+'</div></section>';
+  footer();return;
+ }
  const q=quiz[Math.min(quizStep,quiz.length-1)];
  document.getElementById('main').innerHTML='<section class="card"><div class="kicker">'+q.kicker+'</div><div class="progress"><span style="width:'+((quizStep+1)/quiz.length*100)+'%"></span></div><div class="big">'+q.q+'</div>'+q.opts.map((o,i)=>'<button class="quizOpt" onclick="answer('+i+')">'+esc(o)+'</button>').join('')+'</section><section class="card notice">💡 Tänk Medelhav, historia, hav och lite brittiska influenser.</section>';footer();
 }
 function answer(i){const q=quiz[Math.min(quizStep,quiz.length-1)];if(i===q.answer){quizStep++;localStorage.setItem('quizStep',quizStep);if(quizStep>=quiz.length){revealed=true;localStorage.setItem('revealed','yes');alert('🇲🇹 MALTA! Destinationen är avslöjad!')}}else alert('Inte riktigt… försök igen! 😉');go('quiz')}
 function info(){
  setNav('info');document.getElementById('title').textContent='Praktiskt';
- document.getElementById('main').innerHTML='<section class="card"><div class="kicker">Resan</div><div class="grid"><div class="tile"><b>✈️ Flyg</b><span class="small muted">Swiss Air · CPH ↔ Malta</span></div><div class="tile"><b>🏨 Hotell</b><span class="small muted">Plaza Regency · Sliema</span></div><div class="tile"><b>👯 Grupp</b><span class="small muted">10 tjejer · 2 arrangörer</span></div><div class="tile"><b>📸 Foton</b><span class="small muted">Gemensamt album</span></div></div></section><section class="card"><div class="kicker">Praktiska länkar</div><p class="muted">Här lägger vi in packlista, telefonnummer, bokningsbekräftelser och albumlänk i den slutliga versionen.</p><div class="row"><button class="btn alt" onclick="alert(\'Packlista kommer här.\')">🧳 Packlista</button><button class="btn alt" onclick="alert(\'Viktiga nummer kommer här.\')">☎️ Viktiga nummer</button></div></section>';footer();
+ const flygInfo=revealed?'Swiss Air · CPH ↔ Malta':'Avslöjas i quizet 🤫';
+ const hotellInfo=revealed?'Plaza Regency · Sliema':'Avslöjas i quizet 🤫';
+ document.getElementById('main').innerHTML='<section class="card"><div class="kicker">Resan</div><div class="grid"><div class="tile"><b>✈️ Flyg</b><span class="small muted">'+flygInfo+'</span></div><div class="tile"><b>🏨 Hotell</b><span class="small muted">'+hotellInfo+'</span></div><div class="tile"><b>👯 Grupp</b><span class="small muted">10 tjejer · 2 arrangörer</span></div><div class="tile"><b>📸 Foton</b><span class="small muted">Gemensamt album</span></div></div></section><section class="card"><div class="kicker">Praktiska länkar</div><p class="muted">Här lägger vi in packlista, telefonnummer, bokningsbekräftelser och albumlänk i den slutliga versionen.</p><div class="row"><button class="btn alt" onclick="alert(\'Packlista kommer här.\')">🧳 Packlista</button><button class="btn alt" onclick="alert(\'Viktiga nummer kommer här.\')">☎️ Viktiga nummer</button></div></section>';footer();
 }
 function adminLogin(){if(admin){go('admin');return}const p=prompt('Arrangörslösenord');if(p==='Malta2026!'){admin=true;localStorage.setItem('admin','yes');go('admin')}else alert('Fel lösenord.')}
 function adminPage(){
@@ -105,47 +160,21 @@ function adminPage(){
 }
 function reveal(){revealed=true;localStorage.setItem('revealed','yes');alert('🇲🇹 Malta är nu avslöjat!');go('home')}
 function nextDemo(){demoIndex=(demoIndex+1)%schedule.length;localStorage.setItem('demoIndex',demoIndex);go('now')}
-function footer(){document.getElementById('main').insertAdjacentHTML('beforeend','<footer>Tjejresan 2026 · Malta 💚</footer>')}
+function footer(){document.getElementById('main').insertAdjacentHTML('beforeend','<footer>Tjejresan 2026'+(revealed?' · Malta 💚':' · 💚')+'</footer>')}
+
 home();
-setInterval(()=>{if(page==='now')now()},30000);
-</script>
 
-<script>
-(function () {
-  const QUIZ_OPEN = new Date("2026-09-10T03:00:00+02:00").getTime();
-
-  function quizIsOpen() {
-    return Date.now() >= QUIZ_OPEN;
+// "Nu"-sidan uppdaterar sig själv var 30:e sekund
+setInterval(()=>{ if(currentPage==='now') now(); },30000);
+// Nedräkningen på quiz-låset uppdateras varje sekund, och låser upp automatiskt kl 03:00
+setInterval(()=>{
+ if(currentPage==='quiz' && !revealed){
+  if(!quizIsOpen()){
+   const el=document.getElementById('countdown');
+   if(el) el.textContent=fmtCountdown(QUIZ_OPEN-Date.now());
+   if(quizIsOpen()) quizPage(); // precis blivit 03:00 → visa quizet direkt
   }
-
-  function updateQuizGate() {
-    const btn = document.getElementById("quizBtn");
-    if (!btn) return;
-    if (quizIsOpen()) {
-      btn.disabled = false;
-      btn.style.opacity = "1";
-      btn.title = "";
-    } else {
-      btn.disabled = true;
-      btn.style.opacity = "0.55";
-      btn.title = "Quizet öppnar 03:00 den 10 september 2026";
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", function () {
-    updateQuizGate();
-    setInterval(updateQuizGate, 1000);
-
-    document.addEventListener("click", function (e) {
-      const btn = e.target.closest("#quizBtn");
-      if (btn && !quizIsOpen()) {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        alert("🚌 Quizet öppnar kl. 03:00 den 10 september – när bussen rullar!");
-      }
-    }, true);
-  });
-})();
+ }
+},1000);
 </script>
-
 </body></html>
