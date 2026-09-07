@@ -23,7 +23,7 @@ h1{font-family:Georgia,serif;font-size:29px;font-weight:500;margin:4px 0 0}main{
 .time{font-weight:900;font-size:20px}.meta{color:var(--muted);font-size:14px;margin-top:4px}.nowIcon{font-size:44px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.tile{background:#f7fbfa;border:1px solid var(--line);border-radius:18px;padding:15px}.tile b{display:block;font-size:17px;margin-bottom:4px}
 .quizOpt{width:100%;text-align:left;border:1px solid var(--line);background:white;padding:15px;border-radius:16px;margin:6px 0;color:var(--ink);font-weight:650}
-.quizOpt:hover{border-color:var(--teal2);background:#f0faf7}.progress{height:7px;background:#d7e8e6;border-radius:99px;overflow:hidden;margin:14px 0}.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--teal2));border-radius:99px}
+.quizOpt:hover{border-color:var(--teal2);background:#f0faf7}.progress{height:7px;background:#d7e8e6;border-radius:999px;overflow:hidden;margin:14px 0}.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--teal2));border-radius:999px}
 .timeline .item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}.timeline .item:last-child{border-bottom:0}.dot{width:10px;height:10px;border-radius:50%;background:var(--teal);margin:7px 0 0 3px;flex:none}
 .item strong{font-size:14px}.item .title{font-weight:800}.small{font-size:12px}.notice{background:#fff8e7;border:1px solid #efdfb8;border-radius:17px;padding:14px}
 .nav{position:fixed;bottom:0;left:0;right:0;z-index:20;background:rgba(255,255,255,.97);border-top:1px solid var(--line);padding:8px 8px calc(8px + env(safe-area-inset-bottom));backdrop-filter:blur(12px)}
@@ -48,7 +48,7 @@ h1{font-family:Georgia,serif;font-size:29px;font-weight:500;margin:4px 0 0}main{
 <script>
 const schedule=[
 {date:"2026-09-10",start:"03:00",end:"04:30",icon:"🚕",title:"Taxi till Kastrup",place:"Hbg → Kastrup",detail:"Peter taxi · två taxibilar beställda"},
-{date:"2026-09-10",start:"06:30",end:"12:26",icon:"✈️",title:"Flyg",place:"CPH → Luqa",detail:"Swiss Air",mask:{place:"CPH → resmålet"}},
+{date:"2026-09-10",start:"06:30",end:"12:26",icon:"✈️",title:"Flyg",place:"CPH → Luqa",detail:"Swiss Air",mask:{place:"CPH → resmålet",detail:"Flyg mot hemlig destination"}},
 {date:"2026-09-10",start:"12:26",end:"13:00",icon:"🚐",title:"Ankomst Malta + transfer till hotellet",place:"Malta flygplats → Plaza Regency, Sliema",detail:"Förbokad privat transfer",mask:{title:"Ankomst + transfer till hotellet",place:"Flygplatsen → hotellet"}},
 {date:"2026-09-10",start:"13:00",end:"14:00",icon:"🏨",title:"Check-in + paus",place:"Plaza Regency Hotels",detail:"—",mask:{place:"Hotellet"}},
 {date:"2026-09-10",start:"14:00",end:"15:00",icon:"🥂",title:"Lunch och bubbel",place:"Sliema",detail:"Hotellet",mask:{place:"Vid hotellet"}},
@@ -80,6 +80,7 @@ const schedule=[
 {date:"2026-09-13",start:"19:45",end:"20:46",icon:"🚆",title:"Öresundståg",place:"Kastrup → Helsingborg C",detail:"Tåg"}
 ];
 const quiz=[{"kicker": "Ledtråd 1", "q": "Vårt resmål ligger mitt i Medelhavet.", "opts": ["Italien", "Spanien", "Malta", "Cypern"], "answer": 2}, {"kicker": "Ledtråd 2", "q": "Här är engelska ett av de officiella språken.", "opts": ["Portugal", "Malta", "Grekland", "Kroatien"], "answer": 1}, {"kicker": "Ledtråd 3", "q": "En av världens äldsta befästa städer finns med i vår resa.", "opts": ["Mdina", "Nice", "Palermo", "Split"], "answer": 0}, {"kicker": "Ledtråd 4", "q": "En av resans dagar innehåller Blue Lagoon och katamaran.", "opts": ["Sardinien", "Malta", "Rhodos", "Kreta"], "answer": 1}, {"kicker": "Ledtråd 5", "q": "Nu är det dags att gissa hela resmålet!", "opts": ["Malta", "Madeira", "Cypern", "Sicilien"], "answer": 0}];
+
 let revealed=localStorage.getItem('revealed')==='yes';
 let admin=localStorage.getItem('admin')==='yes';
 let demo=localStorage.getItem('demo')==='yes';
@@ -87,94 +88,192 @@ let demoIndex=Number(localStorage.getItem('demoIndex')||0);
 let quizStep=Number(localStorage.getItem('quizStep')||0);
 let currentPage='home';
 
-// --- Quiz-lås: quizet öppnar först när resan börjar (eller i arrangörens demoläge) ---
-const QUIZ_OPEN = new Date("2026-09-10T03:00:00+02:00").getTime();
-function quizIsOpen(){ return demo || Date.now() >= QUIZ_OPEN; }
+const TRIP_START = new Date("2026-09-10T03:00:00").getTime();
+
+function quizIsOpen(){ return demo || Date.now() >= TRIP_START; }
+
 function fmtCountdown(ms){
  if(ms<=0) return '00:00:00';
  const s=Math.floor(ms/1000), h=Math.floor(s/3600), m=Math.floor((s%3600)/60), sec=s%60;
  return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');
 }
 
-function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
+function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
 function setNav(id){document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active')}
 function go(p){currentPage=p;if(p==='home')home();if(p==='now')now();if(p==='quiz')quizPage();if(p==='info')info();if(p==='admin')adminPage()}
+
 function home(){
  setNav('home');document.getElementById('title').textContent=revealed?'Malta 2026':'Den hemliga resan';
  document.getElementById('main').innerHTML=revealed
- ? `<section class="card hero"><div class="kicker">10–13 september · 10 tjejer</div><div class="big">🇲🇹 Malta!</div><p>Nu börjar äventyret. Låt appen hålla reda på tiderna så att ni kan njuta.</p><button class="btn" onclick="go('now')">Vad händer nu? →</button></section><section class="card"><div class="kicker">Snabbt till</div><div class="grid"><div class="tile"><b>✨ Just nu</b><span class="small muted">Aktuell aktivitet</span></div><div class="tile"><b>🗺️ Karta</b><span class="small muted">Aktuell plats</span></div><div class="tile"><b>📸 Foton</b><span class="small muted">Gemensamt album</span></div><div class="tile"><b>💌 Överraskning</b><span class="small muted">Marie & arrangörerna</span></div></div></section>`
+ ? `<section class="card hero"><div class="kicker">10–13 september · 10 tjejer</div><div class="big">🇲🇹 Malta!</div><p>Nu börjar äventyret. Låt appen hålla reda på tiderna så att ni kan njuta.</p><button class="btn" onclick="go('now')">Vad händer nu? →</button></section><section class="card"><div class="kicker">Snabbt till</div><div class="grid"><div class="tile" onclick="go('now')" style="cursor:pointer"><b>✨ Just nu</b><span class="small muted">Aktuell aktivitet</span></div><div class="tile" onclick="go('info')" style="cursor:pointer"><b>ⓘ Info</b><span class="small muted">Praktiska saker</span></div></div></section>`
  : `<section class="card hero"><div class="kicker">10–13 september · 10 tjejer</div><div class="big">Vart är vi på väg?</div><p>Destinationen är hemlig. På väg till Kastrup får ni ledtrådar och ska tillsammans gissa resmålet.</p><button class="btn" onclick="go('quiz')">Starta gissningsquizet →</button></section><section class="card"><div class="lock">🔒</div><div class="big">Allt avslöjas i rätt ögonblick.</div><p class="muted">De åtta gästerna ser bara den aktivitet som är aktuell. Nästa aktivitet är dold.</p></section>`;
  footer();
 }
+
 function getCurrent(){
  if(demo) return schedule[demoIndex];
- const now=new Date();
- const ts=now.getTime();
- const active=schedule.find(a=>ts>=new Date(a.date+'T'+a.start+':00+02:00').getTime() && ts<new Date(a.date+'T'+a.end+':00+02:00').getTime());
+ const now = Date.now();
+
+ if (now < TRIP_START) {
+   return {
+     isBeforeStart: true,
+     icon: "🧳",
+     title: "Samling & Avfärd",
+     start: "03:00",
+     end: "04:30",
+     place: "Helsingborg → Kastrup",
+     detail: "Enbart handbagage gäller! Varmt väder väntar. Taxi avgår kl. 03:00 på torsdag den 10 september."
+   };
+ }
+
+ const active = schedule.find(a => {
+   const st = new Date(a.date+'T'+a.start+':00').getTime();
+   const en = new Date(a.date+'T'+a.end+':00').getTime();
+   return now >= st && now < en;
+ });
  if(active) return active;
- const next=schedule.find(a=>ts<new Date(a.date+'T'+a.start+':00+02:00').getTime());
- return next||schedule[schedule.length-1];
+
+ const next = schedule.find(a => now < new Date(a.date+'T'+a.start+':00').getTime());
+ return next || schedule[schedule.length-1];
 }
+
 function displayFields(a){
- if(revealed||!a.mask) return {title:a.title,place:a.place,detail:a.detail};
- return {title:a.mask.title||a.title,place:a.mask.place||a.place,detail:a.mask.detail||a.detail};
+ if (a.isBeforeStart) return {title: a.title, place: a.place, detail: a.detail};
+ if (revealed || !a.mask) return {title: a.title, place: a.place, detail: a.detail};
+ return {
+   title: a.mask.title || a.title,
+   place: a.mask.place || a.place,
+   detail: a.mask.detail || "Hemlig aktivitet"
+ };
 }
+
 function now(){
  setNav('now');document.getElementById('title').textContent='Just nu';
  const a=getCurrent();
  const d=displayFields(a);
+ 
  let isActive=true;
- if(!demo){
-  const n=Date.now(), st=new Date(a.date+'T'+a.start+':00+02:00').getTime(), en=new Date(a.date+'T'+a.end+':00+02:00').getTime();
+ if(!demo && !a.isBeforeStart){
+  const n=Date.now(), st=new Date(a.date+'T'+a.start+':00').getTime(), en=new Date(a.date+'T'+a.end+':00').getTime();
   isActive=n>=st&&n<en;
  }
- const mapBtn=revealed?'<button class="btn" onclick="maps()">📍 Visa vägen</button>':'<button class="btn" disabled title="Kartan visas efter avslöjandet">📍 Visa vägen</button>';
- document.getElementById('main').innerHTML=`<section class="card hero"><div class="nowIcon">${a.icon}</div><div class="kicker">${isActive?'Pågår nu':'Nästa aktivitet'}</div><div class="big">${esc(d.title)}</div><div class="time">⏰ ${a.start}–${a.end}</div><div class="meta" style="color:#e0f7f3">📍 ${esc(d.place)}</div><p>${esc(d.detail)}</p><div class="row">${mapBtn}<button class="btn alt" onclick="alert('Här lägger vi in boknings- eller biljettlänken.')">🎟️ Bokning</button></div></section><section class="card"><div class="kicker">Överraskningen</div><div class="big">🔒 Nästa aktivitet är dold</div><p class="muted">När klockan når nästa starttid byts innehållet automatiskt.</p></section>${demo?'<section class="card"><div class="kicker">Arrangörstest</div><button class="btn dark" onclick="nextDemo()">⏭️ Nästa aktivitet</button></section>':''}`;footer();
+ 
+ const mapBtn = (revealed && !a.isBeforeStart)
+   ? '<button class="btn" onclick="maps()">📍 Visa vägen</button>' 
+   : '<button class="btn" disabled title="Kartan visas efter avslöjandet">📍 Visa vägen</button>';
+
+ document.getElementById('main').innerHTML=`
+ <section class="card hero">
+   <div class="nowIcon">${a.icon}</div>
+   <div class="kicker">${a.isBeforeStart ? 'Inför resan' : (isActive?'Pågår nu':'Nästa aktivitet')}</div>
+   <div class="big">${esc(d.title)}</div>
+   <div class="time">⏰ ${a.start}${a.end ? '–'+a.end : ''}</div>
+   <div class="meta" style="color:#e0f7f3">📍 ${esc(d.place)}</div>
+   <p style="margin-top:12px;line-height:1.4;">${esc(d.detail)}</p>
+   <div class="row" style="margin-top:15px">${mapBtn}</div>
+ </section>
+ <section class="card">
+   <div class="kicker">Överraskningen</div>
+   <div class="big">🔒 Nästa aktivitet är dold</div>
+   <p class="muted">När klockan når nästa starttid byts innehållet automatiskt.</p>
+ </section>
+ ${demo?'<section class="card"><div class="kicker">Arrangörstest</div><button class="btn dark" onclick="nextDemo()">⏭️ Nästa aktivitet i demoläge</button></section>':''}`;
+ footer();
 }
+
 function maps(){
- if(!revealed) return; // säkerhetsspärr: ingen karta innan avslöjandet
- const a=getCurrent(); window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(a.place+' Malta'),'_blank');
+ if(!revealed) return; 
+ const a=getCurrent(); 
+ window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(a.place+' Malta'),'_blank');
 }
+
 function quizPage(){
  setNav('quiz');document.getElementById('title').textContent='Gissa resmålet';
- if(revealed){document.getElementById('main').innerHTML='<section class="card hero"><div class="kicker">Quiz klart</div><div class="big">🎉 Ni gissade rätt!</div><p>🇲🇹 Vi ska till Malta!</p><button class="btn" onclick="go(\'home\')">Till resan →</button></section>';footer();return}
+ if(revealed){
+   document.getElementById('main').innerHTML='<section class="card hero"><div class="kicker">Quiz klart</div><div class="big">🎉 Ni gissade rätt!</div><p>🇲🇹 Vi ska till Malta!</p><button class="btn" onclick="go(\'home\')">Till resan →</button></section>';
+   footer();return;
+ }
  if(!quizIsOpen()){
-  document.getElementById('main').innerHTML='<section class="card"><div class="lock">🔒</div><div class="kicker">Quizet är låst</div><div class="big">Öppnar kl. 03:00 den 10 september</div><p class="muted">När taxin kör igång låses ledtrådarna upp!</p><div class="count" id="countdown">'+fmtCountdown(QUIZ_OPEN-Date.now())+'</div></section>';
+  document.getElementById('main').innerHTML='<section class="card" style="text-align:center"><div class="lock">🔒</div><div class="kicker">Quizet är låst</div><div class="big" style="margin-top:10px">Öppnar kl. 03:00 på torsdag</div><p class="muted">När taxin rullar från Helsingborg låses ledtrådarna upp!</p><div class="count" id="countdown" style="margin-top:15px;color:var(--teal)">'+fmtCountdown(TRIP_START-Date.now())+'</div></section>';
   footer();return;
  }
  const q=quiz[Math.min(quizStep,quiz.length-1)];
- document.getElementById('main').innerHTML='<section class="card"><div class="kicker">'+q.kicker+'</div><div class="progress"><span style="width:'+((quizStep+1)/quiz.length*100)+'%"></span></div><div class="big">'+q.q+'</div>'+q.opts.map((o,i)=>'<button class="quizOpt" onclick="answer('+i+')">'+esc(o)+'</button>').join('')+'</section><section class="card notice">💡 Tänk Medelhav, historia, hav och lite brittiska influenser.</section>';footer();
+ document.getElementById('main').innerHTML='<section class="card"><div class="kicker">'+q.kicker+'</div><div class="progress"><span style="width:'+((quizStep+1)/quiz.length*100)+'%"></span></div><div class="big">'+q.q+'</div>'+q.opts.map((o,i)=>'<button class="quizOpt" onclick="answer('+i+')">'+esc(o)+'</button>').join('')+'</section><section class="card notice">💡 Tänk Medelhav, historia, hav och lite brittiska influenser.</section>';
+ footer();
 }
-function answer(i){const q=quiz[Math.min(quizStep,quiz.length-1)];if(i===q.answer){quizStep++;localStorage.setItem('quizStep',quizStep);if(quizStep>=quiz.length){revealed=true;localStorage.setItem('revealed','yes');alert('🇲🇹 MALTA! Destinationen är avslöjad!')}}else alert('Inte riktigt… försök igen! 😉');go('quiz')}
+
+function answer(i){
+ const q=quiz[Math.min(quizStep,quiz.length-1)];
+ if(i===q.answer){
+   quizStep++;
+   localStorage.setItem('quizStep',quizStep);
+   if(quizStep>=quiz.length){
+     revealed=true;
+     localStorage.setItem('revealed','yes');
+     alert('🇲🇹 MALTA! Destinationen är avslöjad!');
+   }
+ } else {
+   alert('Inte riktigt… försök igen! 😉');
+ }
+ go('quiz');
+}
+
 function info(){
  setNav('info');document.getElementById('title').textContent='Praktiskt';
  const flygInfo=revealed?'Swiss Air · CPH ↔ Malta':'Avslöjas i quizet 🤫';
  const hotellInfo=revealed?'Plaza Regency · Sliema':'Avslöjas i quizet 🤫';
- document.getElementById('main').innerHTML='<section class="card"><div class="kicker">Resan</div><div class="grid"><div class="tile"><b>✈️ Flyg</b><span class="small muted">'+flygInfo+'</span></div><div class="tile"><b>🏨 Hotell</b><span class="small muted">'+hotellInfo+'</span></div><div class="tile"><b>👯 Grupp</b><span class="small muted">10 tjejer · 2 arrangörer</span></div><div class="tile"><b>📸 Foton</b><span class="small muted">Gemensamt album</span></div></div></section><section class="card"><div class="kicker">Praktiska länkar</div><p class="muted">Här lägger vi in packlista, telefonnummer, bokningsbekräftelser och albumlänk i den slutliga versionen.</p><div class="row"><button class="btn alt" onclick="alert(\'Packlista kommer här.\')">🧳 Packlista</button><button class="btn alt" onclick="alert(\'Viktiga nummer kommer här.\')">☎️ Viktiga nummer</button></div></section>';footer();
+ document.getElementById('main').innerHTML='<section class="card"><div class="kicker">Resan</div><div class="grid"><div class="tile"><b>✈️ Flyg</b><span class="small muted">'+flygInfo+'</span></div><div class="tile"><b>🏨 Hotell</b><span class="small muted">'+hotellInfo+'</span></div><div class="tile"><b>👯 Grupp</b><span class="small muted">10 tjejer · 2 arrangörer</span></div><div class="tile"><b>🧳 Packning</b><span class="small muted">Enbart handbagage!</span></div></div></section><section class="card"><div class="kicker">Viktig information</div><p class="muted">Samling och avfärd sker med Taxi från Helsingborg kl 03:00 natten mot torsdag den 10 september.</p></section>';
+ footer();
 }
-function adminLogin(){if(admin){go('admin');return}const p=prompt('Arrangörslösenord');if(p==='Malta2026!'){admin=true;localStorage.setItem('admin','yes');go('admin')}else alert('Fel lösenord.')}
+
+function adminLogin(){
+ if(admin){go('admin');return}
+ const p=prompt('Arrangörslösenord');
+ if(p==='Malta2026!'){
+   admin=true;
+   localStorage.setItem('admin','yes');
+   go('admin');
+ } else {
+   alert('Fel lösenord.');
+ }
+}
+
 function adminPage(){
  setNav('admin');document.getElementById('title').textContent='Arrangörsläge';
  const list=schedule.map((a,i)=>'<div class="item"><div class="dot"></div><div><strong>'+a.date+' · '+a.start+'–'+a.end+'</strong><div class="title">'+a.icon+' '+esc(a.title)+'</div><div class="small muted">📍 '+esc(a.place)+' · '+esc(a.detail)+'</div></div></div>').join('');
- document.getElementById('main').innerHTML='<section class="card admin"><div class="kicker">🔐 Endast arrangörer</div><div class="big">Hela resan</div><p>Du och Marie ser hela programmet.</p><div class="row"><button class="btn" onclick="reveal()">🔓 Avslöja Malta</button><button class="btn alt" onclick="demo=true;localStorage.setItem(\'demo\',\'yes\');go(\'now\')">🧪 Testa tidsflödet</button><button class="btn alt" onclick="admin=false;localStorage.removeItem(\'admin\');go(\'home\')">Logga ut</button></div></section><section class="card"><div class="kicker">Program</div><div class="timeline">'+list+'</div></section><section class="card notice"><b>Viktig nästa byggdel:</b> koppla gemensam databas för att kunna ändra tider/länkar från arrangörsmobilen och få ändringarna direkt hos alla åtta gäster.</section>';footer();
+ document.getElementById('main').innerHTML='<section class="card admin"><div class="kicker">🔐 Endast arrangörer</div><div class="big">Hela resan</div><p>Du och Marie ser hela programmet.</p><div class="row"><button class="btn" onclick="reveal()">🔓 Avslöja Malta</button><button class="btn alt" onclick="demo=true;localStorage.setItem(\'demo\',\'yes\');go(\'now\')">🧪 Testa tidsflödet</button><button class="btn alt" onclick="admin=false;localStorage.removeItem(\'admin\');go(\'home\')">Logga ut</button></div></section><section class="card"><div class="kicker">Program</div><div class="timeline">'+list+'</div></section>';
+ footer();
 }
-function reveal(){revealed=true;localStorage.setItem('revealed','yes');alert('🇲🇹 Malta är nu avslöjat!');go('home')}
-function nextDemo(){demoIndex=(demoIndex+1)%schedule.length;localStorage.setItem('demoIndex',demoIndex);go('now')}
-function footer(){document.getElementById('main').insertAdjacentHTML('beforeend','<footer>Tjejresan 2026'+(revealed?' · Malta 💚':' · 💚')+'</footer>')}
+
+function reveal(){
+ revealed=true;
+ localStorage.setItem('revealed','yes');
+ alert('🇲🇹 Malta är nu avslöjat!');
+ go('home');
+}
+
+function nextDemo(){
+ demoIndex=(demoIndex+1)%schedule.length;
+ localStorage.setItem('demoIndex',demoIndex);
+ go('now');
+}
+
+function footer(){
+ document.getElementById('main').insertAdjacentHTML('beforeend','<footer>Tjejresan 2026'+(revealed?' · Malta 💚':' · 💚')+'</footer>');
+}
 
 home();
 
-// "Nu"-sidan uppdaterar sig själv var 30:e sekund
-setInterval(()=>{ if(currentPage==='now') now(); },30000);
-// Nedräkningen på quiz-låset uppdateras varje sekund, och låser upp automatiskt kl 03:00
+setInterval(()=>{ if(currentPage==='now') now(); },15000);
 setInterval(()=>{
  if(currentPage==='quiz' && !revealed){
   if(!quizIsOpen()){
    const el=document.getElementById('countdown');
-   if(el) el.textContent=fmtCountdown(QUIZ_OPEN-Date.now());
-   if(quizIsOpen()) quizPage(); // precis blivit 03:00 → visa quizet direkt
+   if(el) el.textContent=fmtCountdown(TRIP_START-Date.now());
+   if(quizIsOpen()) quizPage(); 
   }
  }
 },1000);
 </script>
-</body></html>
+</body>
+</html>
