@@ -22,8 +22,9 @@ h1{font-family:Georgia,serif;font-size:29px;font-weight:500;margin:4px 0 0}main{
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .time{font-weight:900;font-size:20px}.meta{color:var(--muted);font-size:14px;margin-top:4px}.nowIcon{font-size:44px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.tile{background:#f7fbfa;border:1px solid var(--line);border-radius:18px;padding:15px}.tile b{display:block;font-size:17px;margin-bottom:4px}
-.quizOpt{width:100%;text-align:left;border:1px solid var(--line);background:white;padding:15px;border-radius:16px;margin:6px 0;color:var(--ink);font-weight:650;cursor:pointer}
-.quizOpt:hover{border-color:var(--teal2);background:#f0faf7}.progress{height:7px;background:#d7e8e6;border-radius:999px;overflow:hidden;margin:14px 0}.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--teal2));border-radius:999px}
+.quizOpt{width:100%;text-align:left;border:1px solid var(--line);background:white;padding:14px 16px;border-radius:16px;margin:6px 0;color:var(--ink);font-weight:650;cursor:pointer;transition:all 0.15s ease}
+.quizOpt:hover{border-color:var(--teal2);background:#f0faf7}
+.progress{height:8px;background:#d7e8e6;border-radius:999px;overflow:hidden;margin:14px 0}.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--teal2));border-radius:999px;transition:width 0.3s ease}
 .timeline .item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);align-items:flex-start}.timeline .item:last-child{border-bottom:0}.dot{width:10px;height:10px;border-radius:50%;background:var(--teal);margin:7px 0 0 3px;flex:none}
 .item strong{font-size:14px}.item .title{font-weight:800}.small{font-size:12px}.notice{background:#fff8e7;border:1px solid #efdfb8;border-radius:17px;padding:14px}
 .nav{position:fixed;bottom:0;left:0;right:0;z-index:20;background:rgba(255,255,255,.97);border-top:1px solid var(--line);padding:8px 8px calc(8px + env(safe-area-inset-bottom));backdrop-filter:blur(12px)}
@@ -83,7 +84,79 @@ const defaultSchedule=[
 ];
 
 let schedule = JSON.parse(localStorage.getItem('customSchedule')) || defaultSchedule;
-const quiz=[{"kicker": "Ledtråd 1", "q": "Vårt resmål ligger mitt i Medelhavet.", "opts": ["Italien", "Spanien", "Malta", "Cypern"], "answer": 2}, {"kicker": "Ledtråd 2", "q": "Här är engelska ett av de officiella språken.", "opts": ["Portugal", "Malta", "Grekland", "Kroatien"], "answer": 1}, {"kicker": "Ledtråd 3", "q": "En av världens äldsta befästa städer finns med i vår resa.", "opts": ["Mdina", "Nice", "Palermo", "Split"], "answer": 0}, {"kicker": "Ledtråd 4", "q": "En av resans dagar innehåller Blue Lagoon och katamaran.", "opts": ["Sardinien", "Malta", "Rhodos", "Kreta"], "answer": 1}, {"kicker": "Ledtråd 5", "q": "Nu är det dags att gissa hela resmålet!", "opts": ["Malta", "Madeira", "Cypern", "Sicilien"], "answer": 0}];
+
+const quiz = [
+  {
+    kicker: "Fråga 1 av 10 · Världsdel & Hav",
+    q: "Vilket av följande havsområden ska vi resa till?",
+    opts: ["Östersjön", "Karibiska havet", "Medelhavet", "Svarta havet", "Nordsjön"],
+    answer: 2,
+    tip: "💡 Tänk sol, värme och södra Europa!"
+  },
+  {
+    kicker: "Fråga 2 av 10 · Klimat",
+    q: "Vad kännetecknar klimatet på vår destination i september?",
+    opts: ["Regnigt och svalt", "Sommarvärme och ca 26-28°C", "Snöblandat regn", "Tropiska stormar", "Höststormar"],
+    answer: 1,
+    tip: "💡 Packa solglasögon och badkläder!"
+  },
+  {
+    kicker: "Fråga 3 av 10 · Språk",
+    q: "Vilket av dessa språk talas officiellt på vår destination tillsammans med ett lokalt språk?",
+    opts: ["Franska", "Tyska", "Spanska", "Engelska", "Holländska"],
+    answer: 3,
+    tip: "💡 Landet har en stark brittisk historia!"
+  },
+  {
+    kicker: "Fråga 4 av 10 · Valuta",
+    q: "Vilken valuta betalar vi med när vi handlar på resmålet?",
+    opts: ["Pund (GBP)", "Lira (TRY)", "Euro (EUR)", "Franc (CHF)", "Krona (SEK)"],
+    answer: 2,
+    tip: "💡 Landet är medlem i EU sedan 2004."
+  },
+  {
+    kicker: "Fråga 5 av 10 · Geografi",
+    q: "Vad för typ av geografisk plats ska vi besöka?",
+    opts: ["En bergsby i Alperna", "En ö-nation", "En storstad i inlandet", "En halvö i Skandinavien", "En ökenoas"],
+    answer: 1,
+    tip: "💡 Vi kommer att vara omringade av vatten hela resan!"
+  },
+  {
+    kicker: "Fråga 6 av 10 · Historia",
+    q: "Platsen är känd för sina historiska riddare. Vad kallas de ofta?",
+    opts: ["Tempelriddarna", "Samurajer", "Johanniterorden / Malteserriddarna", "Vikingar", "Gladiatorer"],
+    answer: 2,
+    tip: "💡 Deras åttauddiga kors är en känd symbol på ön."
+  },
+  {
+    kicker: "Fråga 7 av 10 · Vattenäventyr",
+    q: "Dag 2 ska vi ut på en hel dags utflykt på havet. Vad åker vi med?",
+    opts: ["Kajak", "Katamaran", "U-båt", "Trampbåt", "Ångbåt"],
+    answer: 1,
+    tip: "💡 Det blir en härlig båtdag med lunch och stopp i turkost vatten!"
+  },
+  {
+    kicker: "Fråga 8 av 10 · Film & Serie",
+    q: "Många kända filmer och serier har spelats in här. Vilken av dessa?",
+    opts: ["Solsidan", "Game of Thrones / Gladiator", "Harry Potter", "Mamma Mia", "Sagan om Ringen"],
+    answer: 1,
+    tip: "💡 Den gamla huvudstaden Mdina fungerade som King's Landing!"
+  },
+  {
+    kicker: "Fråga 9 av 10 · Mat & Dryck",
+    q: "Vad står bland annat på schemat under dag 3?",
+    opts: ["Älgsafari", "Skidåkning", "Vingårdsbesök & provning", "Isbad", "Trollkarlsshow"],
+    answer: 2,
+    tip: "💡 Vi besöker den kända vingården Meridiana!"
+  },
+  {
+    kicker: "Sista frågan · Avslöjandet!",
+    q: "Vilket är vårt hemliga resmål som vi ska flyga till?",
+    opts: ["Sardinien", "Cypern", "Mallorca", "Malta", "Kreta"],
+    answer: 3,
+    tip: "🎉 Svara rätt för att låsa upp hela appen och se resan!"
+  }
+];
 
 let revealed = localStorage.getItem('revealed') === 'yes';
 let admin = localStorage.getItem('admin') === 'yes';
@@ -111,7 +184,7 @@ function home(){
  setNav('home');document.getElementById('title').textContent=revealed?'Malta 2026':'Den hemliga resan';
  document.getElementById('main').innerHTML=revealed
  ? `<section class="card hero"><div class="kicker">10–13 september · 10 tjejer</div><div class="big">🇲🇹 Malta!</div><p>Nu börjar äventyret. Låt appen hålla reda på tiderna så att ni kan njuta.</p><button class="btn" onclick="go('now')">Vad händer nu? →</button></section><section class="card"><div class="kicker">Snabbt till</div><div class="grid"><div class="tile" onclick="go('now')" style="cursor:pointer"><b>✨ Just nu</b><span class="small muted">Aktuell aktivitet</span></div><div class="tile" onclick="go('info')" style="cursor:pointer"><b>ⓘ Info</b><span class="small muted">Praktiska saker</span></div></div></section>`
- : `<section class="card hero"><div class="kicker">10–13 september · 10 tjejer</div><div class="big">Vart är vi på väg?</div><p>Destinationen är hemlig. På väg till Kastrup får ni ledtrådar och ska tillsammans gissa resmålet.</p><button class="btn" onclick="go('quiz')">Starta gissningsquizet →</button></section><section class="card"><div class="lock">🔒</div><div class="big">Allt avslöjas i rätt ögonblick.</div><p class="muted">De åtta gästerna ser bara den aktivitet som är aktuell. Nästa aktivitet är dold.</p></section>`;
+ : `<section class="card hero"><div class="kicker">10–13 september · 10 tjejer</div><div class="big">Vart är vi på väg?</div><p>Destinationen är hemlig. På väg till Kastrup får ni ledtrådar i vårt quiz för att gissa resmålet.</p><button class="btn" onclick="go('quiz')">Starta gissningsquizet →</button></section><section class="card"><div class="lock">🔒</div><div class="big">Allt avslöjas i rätt ögonblick.</div><p class="muted">De åtta gästerna ser bara den aktivitet som är aktuell. Nästa aktivitet är dold.</p></section>`;
  footer();
 }
 
@@ -195,7 +268,7 @@ function maps(){
 function quizPage(){
  setNav('quiz');document.getElementById('title').textContent='Gissa resmålet';
  if(revealed){
-   document.getElementById('main').innerHTML='<section class="card hero"><div class="kicker">Quiz klart</div><div class="big">🎉 Ni gissade rätt!</div><p>🇲🇹 Vi ska till Malta!</p><button class="btn" onclick="go(\'home\')">Till resan →</button></section>';
+   document.getElementById('main').innerHTML='<section class="card hero"><div class="kicker">Quiz klart</div><div class="big">🎉 Ni klarade quizet!</div><p>🇲🇹 Vi ska till Malta!</p><button class="btn" onclick="go(\'home\')">Till resan →</button></section>';
    footer();return;
  }
  if(!quizIsOpen()){
@@ -203,7 +276,7 @@ function quizPage(){
   footer();return;
  }
  const q=quiz[Math.min(quizStep,quiz.length-1)];
- document.getElementById('main').innerHTML='<section class="card"><div class="kicker">'+q.kicker+'</div><div class="progress"><span style="width:'+((quizStep+1)/quiz.length*100)+'%"></span></div><div class="big">'+q.q+'</div>'+q.opts.map((o,i)=>'<button class="quizOpt" onclick="answer('+i+')">'+esc(o)+'</button>').join('')+'</section><section class="card notice">💡 Tänk Medelhav, historia, hav och lite brittiska influenser.</section>';
+ document.getElementById('main').innerHTML='<section class="card"><div class="kicker">'+q.kicker+'</div><div class="progress"><span style="width:'+((quizStep+1)/quiz.length*100)+'%"></span></div><div class="big">'+q.q+'</div>'+q.opts.map((o,i)=>'<button class="quizOpt" onclick="answer('+i+')">'+esc(o)+'</button>').join('')+'</section><section class="card notice">'+q.tip+'</section>';
  footer();
 }
 
@@ -215,10 +288,12 @@ function answer(i){
    if(quizStep>=quiz.length){
      revealed=true;
      localStorage.setItem('revealed','yes');
-     alert('🇲🇹 MALTA! Destinationen är avslöjad!');
+     alert('🎉 RÄTT! 🇲🇹 Resmålet är MALTA!');
+   } else {
+     alert('Rätt svar! Snyggt jobbat, vidare till nästa fråga!');
    }
  } else {
-   alert('Inte riktigt… försök igen! 😉');
+   alert('Fel svar! Försök igen 😉');
  }
  go('quiz');
 }
