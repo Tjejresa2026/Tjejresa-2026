@@ -16,9 +16,10 @@ button,input,textarea{font:inherit}.app{max-width:760px;margin:auto;min-height:1
 h1{font-family:Georgia,serif;font-size:29px;font-weight:500;margin:4px 0 0}main{padding:12px 17px 112px}
 .card{background:rgba(255,255,255,.95);border:1px solid rgba(255,255,255,.8);border-radius:25px;padding:20px;margin:14px 0;box-shadow:var(--shadow)}
 .hero{color:#fff;background:linear-gradient(145deg,#087f83,#16a69c 65%,#7dc9b3);overflow:hidden;position:relative}.hero:after{content:"";position:absolute;width:210px;height:210px;border-radius:50%;right:-85px;top:-80px;background:rgba(255,255,255,.1)}
+.hero-img{width:100%;height:180px;object-fit:cover;border-radius:18px;margin-bottom:12px}
 .kicker{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:var(--teal)}.hero .kicker{color:#dffbf5}
 .big{font-family:Georgia,serif;font-size:31px;line-height:1.08;margin:8px 0 12px}.hero p{color:rgba(255,255,255,.93)}.muted{color:var(--muted)}
-.btn{border:0;border-radius:999px;padding:12px 17px;background:var(--gold);color:#244243;font-weight:800;cursor:pointer}.btn.alt{background:var(--mint);color:var(--deep)}.btn.dark{background:var(--deep);color:white}.btn.sm{padding:6px 12px;font-size:12px}.row{display:flex;gap:9px;flex-wrap:wrap}
+.btn{border:0;border-radius:999px;padding:12px 17px;background:var(--gold);color:#244243;font-weight:800;cursor:pointer;text-decoration:none;display:inline-block}.btn.alt{background:var(--mint);color:var(--deep)}.btn.dark{background:var(--deep);color:white}.btn.sm{padding:6px 12px;font-size:12px}.row{display:flex;gap:9px;flex-wrap:wrap}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .time{font-weight:900;font-size:20px}.meta{color:var(--muted);font-size:14px;margin-top:4px}.nowIcon{font-size:44px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.tile{background:#f7fbfa;border:1px solid var(--line);border-radius:18px;padding:15px}.tile b{display:block;font-size:17px;margin-bottom:4px}
@@ -33,6 +34,8 @@ h1{font-family:Georgia,serif;font-size:29px;font-weight:500;margin:4px 0 0}main{
 .hidden{display:none!important}.count{font-size:25px;font-weight:900;letter-spacing:.02em}.lock{font-size:48px}
 .edit-box{background:#f0faf7;border:1px solid var(--teal2);border-radius:16px;padding:12px;margin-top:8px;display:flex;flex-direction:column;gap:8px}
 .edit-box input{width:100%;padding:8px;border:1px solid var(--line);border-radius:8px}
+.pack-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.pack-item input[type="checkbox"]{width:20px;height:20px;accent-color:var(--teal)}
 @media(max-width:500px){.card{padding:17px}h1{font-size:26px}}
 </style>
 </head>
@@ -61,7 +64,7 @@ const defaultSchedule=[
 {date:"2026-09-10",start:"23:15",end:"23:59",icon:"🚕",title:"Till hotellet",place:"Valletta → Sliema",detail:"Färja/taxi",mask:{place:"Stan → hotellet"}},
 {date:"2026-09-11",start:"08:00",end:"09:30",icon:"☕",title:"Frukost",place:"Hotellet",detail:"Ingår på hotellet"},
 {date:"2026-09-11",start:"09:30",end:"10:30",icon:"🚶‍♀️",title:"Promenad till Katamaranen",place:"Hotellet → Triq Ix-Xatt, Tas-Sliema",detail:"Promenad",mask:{title:"Promenad till hamnen",place:"Hotellet → hamnen"}},
-{date:"2026-09-11",start:"10:30",end:"18:30",icon:"🛥️",title:"Katamaran",place:"Triq Ix-Xatt, Tas-Sliema",detail:"Comino · Blue Lagoon · lunch · öppen bar",mask:{place:"Hamnen",detail:"Heldagstur på havet med lunch och öppen bar"}},
+{date:"2026-09-11",start:"10:30",end:"18:30",icon:"🛥️",title:"Katamaran",place:"Triq Ix-Xatt, Tas-Sliema",detail:"Comino · Blue Lagoon · lunch · öppen bar",mask:{title:"Heldag på havet",place:"Hamnen",detail:"Båttur med lunch och bad"}},
 {date:"2026-09-11",start:"18:30",end:"19:00",icon:"🚶‍♀️",title:"Till hotellet",place:"Sliema",detail:"Promenad · ca 25 min",mask:{place:"Hotellet"}},
 {date:"2026-09-11",start:"19:00",end:"19:30",icon:"🧘‍♀️",title:"Fri tid / dusch / vila",place:"Hotellet",detail:"Viktigt efter båtdagen"},
 {date:"2026-09-11",start:"20:00",end:"21:30",icon:"🍽️",title:"Middag",place:"Valletta/Sliema",detail:"Bord för 10 · Marie?",mask:{place:"I stan/vid hotellet"}},
@@ -69,7 +72,7 @@ const defaultSchedule=[
 {date:"2026-09-12",start:"08:30",end:"10:00",icon:"☕",title:"Frukost",place:"Hotellet",detail:"Ingår på hotellet"},
 {date:"2026-09-12",start:"10:00",end:"11:00",icon:"🚐",title:"Privat minibuss + chaufför",place:"Sliema → Mdina",detail:"Heldagspris bör begäras",mask:{place:"Hotellet → utflyktsmål"}},
 {date:"2026-09-12",start:"11:00",end:"13:00",icon:"🏛️",title:"Utforska Mdina och ev lätt lunch",place:"Mdina",detail:"Bord för 10",mask:{title:"Utforska en historisk stad + ev lätt lunch",place:"Utflyktsmål"}},
-{date:"2026-09-12",start:"13:00",end:"15:00",icon:"🍷",title:"Vingårdsbesök + provning",place:"Meridiana Wine Estate",detail:"Gruppbokning · allergier meddelas",mask:{place:"Vingård"}},
+{date:"2026-09-12",start:"13:00",end:"15:00",icon:"🍷",title:"Vingårdsbesök + provning",place:"Meridiana Wine Estate",detail:"Gruppbokning · allergier meddelas",mask:{title:"Hemlig utflykt & provning",place:"Hemlig plats",detail:"En smakrik överraskning väntar..."}},
 {date:"2026-09-12",start:"15:00",end:"16:00",icon:"🚐",title:"Tillbaka till hotellet",place:"Mdina → Sliema",detail:"Samma minibuss",mask:{place:"Utflyktsmål → hotellet"}},
 {date:"2026-09-12",start:"16:00",end:"18:15",icon:"✨",title:"Fri tid + göra sig fin",place:"Hotellet",detail:"Sista kvällen"},
 {date:"2026-09-12",start:"18:30",end:"19:00",icon:"⛴️",title:"Färd till Valletta",place:"Sliema → Valletta",detail:"Färja eller taxi",mask:{title:"Färd till stan",place:"Hotellet → stan"}},
@@ -83,7 +86,17 @@ const defaultSchedule=[
 {date:"2026-09-13",start:"19:45",end:"20:46",icon:"🚆",title:"Öresundståg",place:"Kastrup → Helsingborg C",detail:"Tåg"}
 ];
 
+const defaultPacking = [
+  { id: 1, text: "Pass & Nationellt ID-kort", checked: false },
+  { id: 2, text: "Bikini / Badkläder", checked: false },
+  { id: 3, text: "Solglasögon & Solkräm", checked: false },
+  { id: 4, text: "Middagsoutfits & Sköna skor", checked: false },
+  { id: 5, text: "Laddare & Powerbank", checked: false },
+  { id: 6, text: "Reseapotek (Alvedon, skavsårsplåster)", checked: false }
+];
+
 let schedule = JSON.parse(localStorage.getItem('customSchedule')) || defaultSchedule;
+let packingList = JSON.parse(localStorage.getItem('customPacking')) || defaultPacking;
 
 const quiz = [
   {
@@ -183,7 +196,7 @@ function go(p){currentPage=p;if(p==='home')home();if(p==='now')now();if(p==='qui
 function home(){
  setNav('home');document.getElementById('title').textContent=revealed?'Malta 2026':'Den hemliga resan';
  document.getElementById('main').innerHTML=revealed
- ? `<section class="card hero"><div class="kicker">10–13 september · 10 tjejer</div><div class="big">🇲🇹 Malta!</div><p>Nu börjar äventyret. Låt appen hålla reda på tiderna så att ni kan njuta.</p><button class="btn" onclick="go('now')">Vad händer nu? →</button></section><section class="card"><div class="kicker">Snabbt till</div><div class="grid"><div class="tile" onclick="go('now')" style="cursor:pointer"><b>✨ Just nu</b><span class="small muted">Aktuell aktivitet</span></div><div class="tile" onclick="go('info')" style="cursor:pointer"><b>ⓘ Info</b><span class="small muted">Praktiska saker</span></div></div></section>`
+ ? `<section class="card hero"><img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=800&q=80" class="hero-img" alt="Malta"><div class="kicker">10–13 september · 10 tjejer</div><div class="big">🇲🇹 Malta!</div><p>Nu börjar äventyret. Låt appen hålla reda på tiderna så att ni kan njuta.</p><button class="btn" onclick="go('now')">Vad händer nu? →</button></section><section class="card"><div class="kicker">Snabbt till</div><div class="grid"><div class="tile" onclick="go('now')" style="cursor:pointer"><b>✨ Just nu</b><span class="small muted">Aktuell aktivitet</span></div><div class="tile" onclick="go('info')" style="cursor:pointer"><b>ⓘ Info & Packlista</b><span class="small muted">Praktiska saker</span></div></div></section>`
  : `<section class="card hero"><div class="kicker">10–13 september · 10 tjejer</div><div class="big">Vart är vi på väg?</div><p>Destinationen är hemlig. På väg till Kastrup får ni ledtrådar i vårt quiz för att gissa resmålet.</p><button class="btn" onclick="go('quiz')">Starta gissningsquizet →</button></section><section class="card"><div class="lock">🔒</div><div class="big">Allt avslöjas i rätt ögonblick.</div><p class="muted">De åtta gästerna ser bara den aktivitet som är aktuell. Nästa aktivitet är dold.</p></section>`;
  footer();
 }
@@ -215,13 +228,21 @@ function getCurrent(){
  return next || schedule[schedule.length-1];
 }
 
+function isTimeReached(a){
+ if(demo) return true;
+ if(a.isBeforeStart) return true;
+ const now = Date.now();
+ const st = new Date(a.date+'T'+a.start+':00').getTime();
+ return now >= st;
+}
+
 function displayFields(a){
  if (a.isBeforeStart) return {title: a.title, place: a.place, detail: a.detail};
- if (revealed || !a.mask) return {title: a.title, place: a.place, detail: a.detail};
+ if (isTimeReached(a)) return {title: a.title, place: a.place, detail: a.detail};
  return {
-   title: a.mask.title || a.title,
-   place: a.mask.place || a.place,
-   detail: a.mask.detail || "Hemlig aktivitet"
+   title: a.mask ? (a.mask.title || a.title) : "Hemlig aktivitet",
+   place: a.mask ? (a.mask.place || a.place) : "Hemlig plats",
+   detail: a.mask ? (a.mask.detail || "Överraskning väntar...") : "Överraskning väntar..."
  };
 }
 
@@ -229,6 +250,7 @@ function now(){
  setNav('now');document.getElementById('title').textContent='Just nu';
  const a=getCurrent();
  const d=displayFields(a);
+ const timeReached = isTimeReached(a);
  
  let isActive=true;
  if(!demo && !a.isBeforeStart){
@@ -236,9 +258,9 @@ function now(){
   isActive=n>=st&&n<en;
  }
  
- const mapBtn = (revealed && !a.isBeforeStart)
+ const mapBtn = (timeReached && !a.isBeforeStart)
    ? '<button class="btn" onclick="maps()">📍 Visa vägen</button>' 
-   : '<button class="btn" disabled title="Kartan visas efter avslöjandet">📍 Visa vägen</button>';
+   : '<button class="btn" disabled title="Kartan visas när aktiviteten startar">📍 Visa vägen</button>';
 
  document.getElementById('main').innerHTML=`
  <section class="card hero">
@@ -260,8 +282,8 @@ function now(){
 }
 
 function maps(){
- if(!revealed) return; 
  const a=getCurrent(); 
+ if(!isTimeReached(a)) return;
  window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(a.place+' Malta'),'_blank');
 }
 
@@ -302,8 +324,62 @@ function info(){
  setNav('info');document.getElementById('title').textContent='Praktiskt';
  const flygInfo=revealed?'Swiss Air · CPH ↔ Malta':'Avslöjas i quizet 🤫';
  const hotellInfo=revealed?'Plaza Regency · Sliema':'Avslöjas i quizet 🤫';
- document.getElementById('main').innerHTML='<section class="card"><div class="kicker">Resan</div><div class="grid"><div class="tile"><b>✈️ Flyg</b><span class="small muted">'+flygInfo+'</span></div><div class="tile"><b>🏨 Hotell</b><span class="small muted">'+hotellInfo+'</span></div><div class="tile"><b>👯 Grupp</b><span class="small muted">10 tjejer · 2 arrangörer</span></div><div class="tile"><b>🧳 Packning</b><span class="small muted">Enbart handbagage!</span></div></div></section><section class="card"><div class="kicker">Viktig information</div><p class="muted">Samling och avfärd sker med Taxi från Helsingborg kl 03:00 natten mot torsdag den 10 september.</p></section>';
+ 
+ const linksSection = revealed ? `
+   <section class="card">
+     <div class="kicker">Länkar</div>
+     <div class="row" style="margin-top:10px;">
+       <a href="https://www.plazahotelsmalta.com" target="_blank" class="btn alt">🏨 Hotellets hemsida</a>
+     </div>
+   </section>
+ ` : '';
+
+ const packHtml = packingList.map((item, idx) => `
+   <div class="pack-item">
+     <input type="checkbox" id="chk_${idx}" ${item.checked ? 'checked' : ''} onchange="togglePack(${idx})">
+     <label for="chk_${idx}">${esc(item.text)}</label>
+   </div>
+ `).join('');
+
+ document.getElementById('main').innerHTML=`
+ <section class="card">
+   <div class="kicker">Resan</div>
+   <div class="grid">
+     <div class="tile"><b>✈️ Flyg</b><span class="small muted">${flygInfo}</span></div>
+     <div class="tile"><b>🏨 Hotell</b><span class="small muted">${hotellInfo}</span></div>
+     <div class="tile"><b>👯 Grupp</b><span class="small muted">10 tjejer · 2 arrangörer</span></div>
+     <div class="tile"><b>🧳 Packning</b><span class="small muted">Enbart handbagage!</span></div>
+   </div>
+ </section>
+ ${linksSection}
+ <section class="card">
+   <div class="kicker">Packlista för Tjejresan</div>
+   <p class="muted" style="font-size:13px;">Bocka av vad du packat ner:</p>
+   <div>${packHtml}</div>
+   <div style="margin-top:15px;display:flex;gap:5px;">
+     <input id="new_pack" placeholder="Lägg till eget plagg/sak..." style="flex:1;padding:8px;border:1px solid var(--line);border-radius:10px;">
+     <button class="btn sm" onclick="addPackItem()">+ Lägg till</button>
+   </div>
+ </section>
+ <section class="card">
+   <div class="kicker">Viktig information</div>
+   <p class="muted">Samling och avfärd sker med Taxi från Helsingborg kl 03:00 natten mot torsdag den 10 september.</p>
+ </section>`;
  footer();
+}
+
+function togglePack(idx){
+ packingList[idx].checked = !packingList[idx].checked;
+ localStorage.setItem('customPacking', JSON.stringify(packingList));
+}
+
+function addPackItem(){
+ const input = document.getElementById('new_pack');
+ if(input && input.value.trim()){
+   packingList.push({ id: Date.now(), text: input.value.trim(), checked: false });
+   localStorage.setItem('customPacking', JSON.stringify(packingList));
+   info();
+ }
 }
 
 function adminLogin(){
@@ -393,6 +469,7 @@ function reveal(){
 function resetApp(){
  localStorage.clear();
  schedule = defaultSchedule;
+ packingList = defaultPacking;
  revealed=false;
  admin=false;
  demo=false;
