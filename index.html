@@ -10,7 +10,7 @@
 :root{--teal:#087f83;--teal2:#2ab1a4;--deep:#075568;--mint:#dff3ee;--cream:#fffdf8;--ink:#17383b;--muted:#6d8586;--gold:#d8b45c;--line:rgba(7,85,104,.12);--shadow:0 16px 40px rgba(5,77,83,.13)}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}
 body{background:linear-gradient(160deg,#ccefeb,#edf8f5 45%,#dceff2);}
-button{font:inherit;cursor:pointer}.app{max-width:760px;margin:auto;min-height:100vh}
+button,input,textarea{font:inherit}.app{max-width:760px;margin:auto;min-height:100vh}
 .top{position:sticky;top:0;z-index:10;padding:18px 18px 12px;background:rgba(7,93,104,.94);color:#fff;backdrop-filter:blur(12px);box-shadow:0 4px 20px rgba(0,0,0,.08)}
 .topline{display:flex;justify-content:space-between;align-items:center}.brand{letter-spacing:.14em;text-transform:uppercase;font-size:12px;opacity:.86;font-weight:800}
 h1{font-family:Georgia,serif;font-size:29px;font-weight:500;margin:4px 0 0}main{padding:12px 17px 112px}
@@ -18,18 +18,20 @@ h1{font-family:Georgia,serif;font-size:29px;font-weight:500;margin:4px 0 0}main{
 .hero{color:#fff;background:linear-gradient(145deg,#087f83,#16a69c 65%,#7dc9b3);overflow:hidden;position:relative}.hero:after{content:"";position:absolute;width:210px;height:210px;border-radius:50%;right:-85px;top:-80px;background:rgba(255,255,255,.1)}
 .kicker{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:var(--teal)}.hero .kicker{color:#dffbf5}
 .big{font-family:Georgia,serif;font-size:31px;line-height:1.08;margin:8px 0 12px}.hero p{color:rgba(255,255,255,.93)}.muted{color:var(--muted)}
-.btn{border:0;border-radius:999px;padding:12px 17px;background:var(--gold);color:#244243;font-weight:800}.btn.alt{background:var(--mint);color:var(--deep)}.btn.dark{background:var(--deep);color:white}.row{display:flex;gap:9px;flex-wrap:wrap}
+.btn{border:0;border-radius:999px;padding:12px 17px;background:var(--gold);color:#244243;font-weight:800;cursor:pointer}.btn.alt{background:var(--mint);color:var(--deep)}.btn.dark{background:var(--deep);color:white}.btn.sm{padding:6px 12px;font-size:12px}.row{display:flex;gap:9px;flex-wrap:wrap}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .time{font-weight:900;font-size:20px}.meta{color:var(--muted);font-size:14px;margin-top:4px}.nowIcon{font-size:44px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.tile{background:#f7fbfa;border:1px solid var(--line);border-radius:18px;padding:15px}.tile b{display:block;font-size:17px;margin-bottom:4px}
-.quizOpt{width:100%;text-align:left;border:1px solid var(--line);background:white;padding:15px;border-radius:16px;margin:6px 0;color:var(--ink);font-weight:650}
+.quizOpt{width:100%;text-align:left;border:1px solid var(--line);background:white;padding:15px;border-radius:16px;margin:6px 0;color:var(--ink);font-weight:650;cursor:pointer}
 .quizOpt:hover{border-color:var(--teal2);background:#f0faf7}.progress{height:7px;background:#d7e8e6;border-radius:999px;overflow:hidden;margin:14px 0}.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--teal2));border-radius:999px}
-.timeline .item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}.timeline .item:last-child{border-bottom:0}.dot{width:10px;height:10px;border-radius:50%;background:var(--teal);margin:7px 0 0 3px;flex:none}
+.timeline .item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);align-items:flex-start}.timeline .item:last-child{border-bottom:0}.dot{width:10px;height:10px;border-radius:50%;background:var(--teal);margin:7px 0 0 3px;flex:none}
 .item strong{font-size:14px}.item .title{font-weight:800}.small{font-size:12px}.notice{background:#fff8e7;border:1px solid #efdfb8;border-radius:17px;padding:14px}
 .nav{position:fixed;bottom:0;left:0;right:0;z-index:20;background:rgba(255,255,255,.97);border-top:1px solid var(--line);padding:8px 8px calc(8px + env(safe-area-inset-bottom));backdrop-filter:blur(12px)}
-.navin{width:min(730px,100%);margin:auto;display:flex;gap:5px}.nav button{flex:1;border:0;background:transparent;border-radius:14px;padding:8px 3px;color:#718586;font-size:11px}.nav button.active{background:#e1f2ee;color:var(--teal);font-weight:900}
+.navin{width:min(730px,100%);margin:auto;display:flex;gap:5px}.nav button{flex:1;border:0;background:transparent;border-radius:14px;padding:8px 3px;color:#718586;font-size:11px;cursor:pointer}.nav button.active{background:#e1f2ee;color:var(--teal);font-weight:900}
 .admin{background:linear-gradient(145deg,#164b58,#087f83);color:#fff}.admin .kicker{color:#c9eee8}footer{text-align:center;color:#6c8586;font-size:11px;margin:25px 0}
 .hidden{display:none!important}.count{font-size:25px;font-weight:900;letter-spacing:.02em}.lock{font-size:48px}
+.edit-box{background:#f0faf7;border:1px solid var(--teal2);border-radius:16px;padding:12px;margin-top:8px;display:flex;flex-direction:column;gap:8px}
+.edit-box input{width:100%;padding:8px;border:1px solid var(--line);border-radius:8px}
 @media(max-width:500px){.card{padding:17px}h1{font-size:26px}}
 </style>
 </head>
@@ -46,7 +48,7 @@ h1{font-family:Georgia,serif;font-size:29px;font-weight:500;margin:4px 0 0}main{
 </div></nav>
 </div>
 <script>
-const schedule=[
+const defaultSchedule=[
 {date:"2026-09-10",start:"03:00",end:"04:30",icon:"🚕",title:"Taxi till Kastrup",place:"Hbg → Kastrup",detail:"Peter taxi · två taxibilar beställda"},
 {date:"2026-09-10",start:"06:30",end:"12:26",icon:"✈️",title:"Flyg",place:"CPH → Luqa",detail:"Swiss Air",mask:{place:"CPH → resmålet",detail:"Flyg mot hemlig destination"}},
 {date:"2026-09-10",start:"12:26",end:"13:00",icon:"🚐",title:"Ankomst Malta + transfer till hotellet",place:"Malta flygplats → Plaza Regency, Sliema",detail:"Förbokad privat transfer",mask:{title:"Ankomst + transfer till hotellet",place:"Flygplatsen → hotellet"}},
@@ -79,14 +81,17 @@ const schedule=[
 {date:"2026-09-13",start:"13:15",end:"19:10",icon:"✈️",title:"Flyg Luqa → CPH",place:"Malta flygplats → CPH flygplats",detail:"Swiss Air",mask:{title:"Flyg hem",place:"Flygplatsen → CPH"}},
 {date:"2026-09-13",start:"19:45",end:"20:46",icon:"🚆",title:"Öresundståg",place:"Kastrup → Helsingborg C",detail:"Tåg"}
 ];
+
+let schedule = JSON.parse(localStorage.getItem('customSchedule')) || defaultSchedule;
 const quiz=[{"kicker": "Ledtråd 1", "q": "Vårt resmål ligger mitt i Medelhavet.", "opts": ["Italien", "Spanien", "Malta", "Cypern"], "answer": 2}, {"kicker": "Ledtråd 2", "q": "Här är engelska ett av de officiella språken.", "opts": ["Portugal", "Malta", "Grekland", "Kroatien"], "answer": 1}, {"kicker": "Ledtråd 3", "q": "En av världens äldsta befästa städer finns med i vår resa.", "opts": ["Mdina", "Nice", "Palermo", "Split"], "answer": 0}, {"kicker": "Ledtråd 4", "q": "En av resans dagar innehåller Blue Lagoon och katamaran.", "opts": ["Sardinien", "Malta", "Rhodos", "Kreta"], "answer": 1}, {"kicker": "Ledtråd 5", "q": "Nu är det dags att gissa hela resmålet!", "opts": ["Malta", "Madeira", "Cypern", "Sicilien"], "answer": 0}];
 
-let revealed=localStorage.getItem('revealed')==='yes';
-let admin=localStorage.getItem('admin')==='yes';
-let demo=localStorage.getItem('demo')==='yes';
-let demoIndex=Number(localStorage.getItem('demoIndex')||0);
-let quizStep=Number(localStorage.getItem('quizStep')||0);
-let currentPage='home';
+let revealed = localStorage.getItem('revealed') === 'yes';
+let admin = localStorage.getItem('admin') === 'yes';
+let demo = localStorage.getItem('demo') === 'yes';
+let demoIndex = Number(localStorage.getItem('demoIndex') || 0);
+let quizStep = Number(localStorage.getItem('quizStep') || 0);
+let editingIndex = -1;
+let currentPage = 'home';
 
 const TRIP_START = new Date("2026-09-10T03:00:00").getTime();
 
@@ -240,15 +245,85 @@ function adminLogin(){
 
 function adminPage(){
  setNav('admin');document.getElementById('title').textContent='Arrangörsläge';
- const list=schedule.map((a,i)=>'<div class="item"><div class="dot"></div><div><strong>'+a.date+' · '+a.start+'–'+a.end+'</strong><div class="title">'+a.icon+' '+esc(a.title)+'</div><div class="small muted">📍 '+esc(a.place)+' · '+esc(a.detail)+'</div></div></div>').join('');
- document.getElementById('main').innerHTML='<section class="card admin"><div class="kicker">🔐 Endast arrangörer</div><div class="big">Hela resan</div><p>Du och Marie ser hela programmet.</p><div class="row"><button class="btn" onclick="reveal()">🔓 Avslöja Malta</button><button class="btn alt" onclick="demo=true;localStorage.setItem(\'demo\',\'yes\');go(\'now\')">🧪 Testa tidsflödet</button><button class="btn alt" onclick="admin=false;localStorage.removeItem(\'admin\');go(\'home\')">Logga ut</button></div></section><section class="card"><div class="kicker">Program</div><div class="timeline">'+list+'</div></section>';
+ const list=schedule.map((a,i)=>{
+   if(editingIndex===i){
+     return `<div class="edit-box">
+       <input id="e_title" value="${esc(a.title)}" placeholder="Titel">
+       <div style="display:flex;gap:5px;">
+         <input id="e_start" value="${esc(a.start)}" placeholder="Start (HH:MM)" style="width:50%">
+         <input id="e_end" value="${esc(a.end)}" placeholder="Slut (HH:MM)" style="width:50%">
+       </div>
+       <input id="e_place" value="${esc(a.place)}" placeholder="Plats">
+       <input id="e_detail" value="${esc(a.detail)}" placeholder="Detaljer">
+       <div style="display:flex;gap:5px;margin-top:5px;">
+         <button class="btn sm" onclick="saveItem(${i})">Spara</button>
+         <button class="btn sm alt" onclick="editingIndex=-1;go('admin')">Avbryt</button>
+       </div>
+     </div>`;
+   }
+   return `<div class="item">
+     <div class="dot"></div>
+     <div style="flex:1">
+       <strong>${a.date} · ${a.start}–${a.end}</strong>
+       <div class="title">${a.icon} ${esc(a.title)}</div>
+       <div class="small muted">📍 ${esc(a.place)} · ${esc(a.detail)}</div>
+     </div>
+     <button class="btn sm alt" onclick="editingIndex=${i};go('admin')">✏️</button>
+   </div>`;
+ }).join('');
+
+ document.getElementById('main').innerHTML=`<section class="card admin">
+   <div class="kicker">🔐 Endast arrangörer</div>
+   <div class="big">Hela resan</div>
+   <p>Ändringar ni gör här sparas direkt i er mobil.</p>
+   <div class="row">
+     <button class="btn" onclick="reveal()">🔓 Avslöja Malta</button>
+     <button class="btn alt" onclick="demo=true;localStorage.setItem('demo','yes');go('now')">🧪 Testa tidsflödet</button>
+     <button class="btn alt" onclick="exportCode()">📋 Kopiera ny kod till GitHub</button>
+     <button class="btn alt" onclick="resetApp()">🔄 Återställ allt</button>
+     <button class="btn alt" onclick="admin=false;localStorage.removeItem('admin');go('home')">Logga ut</button>
+   </div>
+ </section>
+ <section class="card">
+   <div class="kicker">Program (Klicka ✏️ för att ändra)</div>
+   <div class="timeline">${list}</div>
+ </section>`;
  footer();
+}
+
+function saveItem(i){
+ schedule[i].title = document.getElementById('e_title').value;
+ schedule[i].start = document.getElementById('e_start').value;
+ schedule[i].end = document.getElementById('e_end').value;
+ schedule[i].place = document.getElementById('e_place').value;
+ schedule[i].detail = document.getElementById('e_detail').value;
+ localStorage.setItem('customSchedule', JSON.stringify(schedule));
+ editingIndex = -1;
+ go('admin');
+}
+
+function exportCode(){
+ const html = document.documentElement.outerHTML;
+ navigator.clipboard.writeText('<!doctype html>\n' + html);
+ alert('Hela sidans källkod är kopierad! Du kan klistra in den i index.html på GitHub direkt från mobilen om ni vill att ändringen ska gälla för ALLA.');
 }
 
 function reveal(){
  revealed=true;
  localStorage.setItem('revealed','yes');
  alert('🇲🇹 Malta är nu avslöjat!');
+ go('home');
+}
+
+function resetApp(){
+ localStorage.clear();
+ schedule = defaultSchedule;
+ revealed=false;
+ admin=false;
+ demo=false;
+ demoIndex=0;
+ quizStep=0;
+ alert('Appen har återställts till ursprungsläget!');
  go('home');
 }
 
