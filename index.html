@@ -123,31 +123,31 @@ const quiz = [
   },
   {
     kicker: "Fråga 6 av 10 · Historia",
-    q: "Platsen är känd för sina historiska riddare. Vad kallas de ofta?",
-    opts: ["Tempelriddarna", "Samurajer", "Johanniterorden / Malteserriddarna", "Vikingar", "Gladiatorer"],
-    answer: 2,
-    tip: "💡 Deras åttauddiga kors är en känd symbol på ön."
+    q: "Vår destination är känd för sin rika historia. Vad kännetecknar arkitekturen på ön?",
+    opts: ["Trähus i Falu rödfärg", "Kalkstensbyggnader, ringmurar och klocktorn", "Skyskrapor i glas", "Pyramider", "Bambuhyddor"],
+    answer: 1,
+    tip: "💡 Öns guldgula stenar ger städerna en fantastisk karaktär!"
   },
   {
     kicker: "Fråga 7 av 10 · Vattenäventyr",
-    q: "Dag 2 ska vi ut på en hel dags utflykt på havet. Vad åker vi med?",
-    opts: ["Kajak", "Katamaran", "U-båt", "Trampbåt", "Ångbåt"],
-    answer: 1,
-    tip: "💡 Det blir en härlig båtdag med lunch och stopp i turkost vatten!"
+    q: "Ö-nationer i Medelhavet är kända för sitt kristallklara vatten. Vilken aktivitet passar bäst här?",
+    opts: ["Långfärdsskridskor", "Forsränning i floder", "Båttur och bad i turkosa laguner", "Älgsafari", "Skidåkning"],
+    answer: 2,
+    tip: "💡 Det kommer garanterat att bli tillfälle för härliga bad!"
   },
   {
     kicker: "Fråga 8 av 10 · Film & Serie",
-    q: "Många kända filmer och serier har spelats in här. Vilken av dessa?",
-    opts: ["Solsidan", "Game of Thrones / Gladiator", "Harry Potter", "Mamma Mia", "Sagan om Ringen"],
+    q: "Många kända storfilmer har spelats in i denna miljö. Vilken typ av film/serie?",
+    opts: ["Solsidan", "Historiska epos och riddarfilmer (t.ex. Gladiator)", "Sagan om Ringen", "Harry Potter", "Mamma Mia"],
     answer: 1,
-    tip: "💡 Den gamla huvudstaden Mdina fungerade som King's Landing!"
+    tip: "💡 De gamla fästningarna ser ut som hämtade ur en film!"
   },
   {
     kicker: "Fråga 9 av 10 · Mat & Dryck",
-    q: "Vad står bland annat på schemat under dag 3?",
-    opts: ["Älgsafari", "Skidåkning", "Vingårdsbesök & provning", "Isbad", "Trollkarlsshow"],
+    q: "Vad är regionen runt Medelhavet särskilt känd för att producera?",
+    opts: ["Lönnsirap", "Vodka", "Lokalodlat vin och olivolja", "Renkött", "Cider"],
     answer: 2,
-    tip: "💡 Vi besöker den kända vingården Meridiana!"
+    tip: "💡 Vi kommer definitivt att få smaka på lokala delikatesser!"
   },
   {
     kicker: "Sista frågan · Avslöjandet!",
@@ -253,7 +253,7 @@ function now(){
  <section class="card">
    <div class="kicker">Överraskningen</div>
    <div class="big">🔒 Nästa aktivitet är dold</div>
-   <p class="muted">När klockan når nästa starttid byts innehållet automatiskt.</p>
+   <p class="muted">När klockan nått nästa starttid byts innehållet automatiskt.</p>
  </section>
  ${demo?'<section class="card"><div class="kicker">Arrangörstest</div><button class="btn dark" onclick="nextDemo()">⏭️ Nästa aktivitet i demoläge</button></section>':''}`;
  footer();
