@@ -181,7 +181,7 @@ let quizStep = Number(localStorage.getItem('quizStep') || 0);
 let editingIndex = -1;
 let currentPage = 'home';
 
-const TRIP_START = new Date("2026-09-10T03:00:00").getTime();
+const TRIP_START = new Date("2026-09-10T03:30:00").getTime();
 
 function quizIsOpen(){ return demo || Date.now() >= TRIP_START; }
 
@@ -296,7 +296,7 @@ function quizPage(){
    footer();return;
  }
  if(!quizIsOpen()){
-  document.getElementById('main').innerHTML='<section class="card" style="text-align:center"><div class="lock">🔒</div><div class="kicker">Quizet är låst</div><div class="big" style="margin-top:10px">Öppnar kl. 03:00 på torsdag</div><p class="muted">När taxin rullar från Helsingborg låses ledtrådarna upp!</p><div class="count" id="countdown" style="margin-top:15px;color:var(--teal)">'+fmtCountdown(TRIP_START-Date.now())+'</div></section>';
+  document.getElementById('main').innerHTML='<section class="card" style="text-align:center"><div class="lock">🔒</div><div class="kicker">Quizet är låst</div><div class="big" style="margin-top:10px">Öppnar kl. 03:30 på torsdag</div><p class="muted">När taxin rullar mot Kastrup låses ledtrådarna upp!</p><div class="count" id="countdown" style="margin-top:15px;color:var(--teal)">'+fmtCountdown(TRIP_START-Date.now())+'</div></section>';
   footer();return;
  }
  const q=quiz[Math.min(quizStep,quiz.length-1)];
